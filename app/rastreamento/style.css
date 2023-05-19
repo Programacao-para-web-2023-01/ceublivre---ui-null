@@ -1,0 +1,29 @@
+form {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form > * {
+  margin: 5px 0;
+}
+
+input {
+  width: 50%;
+  height: 3rem;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+}
+
+button {
+  border: solid #777 2px;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  transition: ease-in-out 0.1s;
+}
+
+button:hover {
+  transform: scale(1.02);
+  filter: brightness(0.5);
+}

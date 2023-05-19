@@ -1,0 +1,64 @@
+/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[2].oneOf[13].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[2].oneOf[13].use[3]!./app/components/Navbar/style.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************/
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #282c34;
+  }
+  
+  .navbar ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar li {
+    margin: 0 1rem;
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .navbar a:hover {
+    color: #61dafb;
+  }
+  
+/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[2].oneOf[13].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[2].oneOf[13].use[3]!./app/rastreamento/style.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************/
+form {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form > * {
+  margin: 5px 0;
+}
+
+input {
+  width: 50%;
+  height: 3rem;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+}
+
+button {
+  border: solid #777 2px;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  transition: ease-in-out 0.1s;
+}
+
+button:hover {
+  transform: scale(1.02);
+  filter: brightness(0.5);
+}
+
