@@ -16,7 +16,7 @@ export default function Navbar() {
           <a href="/contact">Transportadoras</a>
         </li>
         <li>
-          <a href="/contact">Envio</a>
+          <a href="/criar-envio">Envio</a>
         </li>
       </ul>
     </nav>
