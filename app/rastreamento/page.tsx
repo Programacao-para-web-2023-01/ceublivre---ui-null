@@ -6,7 +6,6 @@ import "./style.css";
 
 export default function Rastreamento() {
   const [rast, setRast] = useState("");
-
   return (
     <>
       <Navbar />
