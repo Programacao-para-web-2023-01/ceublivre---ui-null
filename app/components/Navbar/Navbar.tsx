@@ -18,6 +18,9 @@ export default function Navbar() {
         <li>
           <a href="/criar-envio">Envio</a>
         </li>
+        <li>
+          <a href="/admin">Admin</a>
+        </li>
       </ul>
     </nav>
   );
