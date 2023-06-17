@@ -25,4 +25,7 @@
   .navbar a:hover {
     color: #61dafb;
   }
-  
+input{
+  border: solid 1px black;
+  border-radius: 5px;
+}
