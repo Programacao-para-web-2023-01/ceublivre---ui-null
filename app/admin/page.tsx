@@ -3,7 +3,7 @@ import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import Navbar from "../components/Navbar/Navbar";
 import "./style.css";
 import { useEffect, useState } from "react";
-import KeyboardReturnIcon from "@material-ui/icons/KeyboardReturn";
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import SearchIcon from "@mui/icons-material/Search";
 
 export default function Admin() {
@@ -33,37 +33,46 @@ export default function Admin() {
       .catch((error) => setPedido(error));
   };
   let handleChange = (e: any, item: any) => {
-    if(e.target.value === 'true'){
+    if (e.target.value === "true") {
       setPedidoUpdate((data: any) => ({
         ...data,
         [item]: true,
-      }))
-    }
-    else{
+      }));
+    } else {
       setPedidoUpdate((data: any) => ({
         ...data,
         [item]: false,
-      }))
+      }));
     }
   };
   let handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    fetch(`${url}/pedidos/${pedidoUpdate?.id_pedido}`, {
-      method: "PUT",
-      headers: new Headers({
-        Authorization: `${token}`,
-        "Content-Type": "application/json",
-      }),
-      body: JSON.stringify(pedidoUpdate),
-      credentials: "include",
-    })
-      .then((data) => {
-        alert(`O pedido "${pedidoUpdate?.id_pedido}" foi atualizado com sucesso!`);
-        handleSearch(e);
+    if (
+      (pedidoUpdate.valor_declarado_pedido < 24.5 
+        || 
+        pedidoUpdate.valor_declarado_pedido > 3000)
+    ) {
+      alert("Valor aceito do pedido entre R$ 24,50 e R$ 3000,00!");
+    } else {
+      fetch(`${url}/pedidos/${pedidoUpdate?.id_pedido}`, {
+        method: "PUT",
+        headers: new Headers({
+          Authorization: `${token}`,
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify(pedidoUpdate),
+        credentials: "include",
       })
-      .catch((error) => {
-        alert("Ocorreu um erro ao atualizar o Pedido.");
-      });
+        .then((data) => {
+          alert(
+            `O pedido "${pedidoUpdate?.id_pedido}" foi atualizado com sucesso!`
+          );
+          handleSearch(e);
+        })
+        .catch((error) => {
+          alert("Ocorreu um erro ao atualizar o Pedido.");
+        });
+    }
   };
   useEffect(() => {
     if (pedido?.id_pedido) {
@@ -74,7 +83,7 @@ export default function Admin() {
           .filter((item) => !item.includes("id_pedido"))
           .filter((item) => !item.includes("rastreamento"))
           .filter((item) => !item.includes("status"))
-          .filter((item)=> typeof pedido[item] !== "boolean")
+          .filter((item) => typeof pedido[item] !== "boolean")
       );
       setPedidoSelects(
         Object.keys(pedido).filter(
@@ -85,13 +94,13 @@ export default function Admin() {
     setTimeout(() => setLoading(false), 500);
   }, [pedido]);
   useEffect(() => {
-    console.log(pedidoUpdate)
+    console.log(pedidoUpdate);
   }, [pedidoUpdate]);
   return (
     <>
       <Navbar />
       <Grid display="grid" justifyContent="center" alignItems="center">
-        <Typography variant="h3" paddingY="2rem">
+        <Typography textAlign="center" variant="h3" paddingY="2rem">
           Editar pedido
         </Typography>
         {!pedido ? (
@@ -134,7 +143,11 @@ export default function Admin() {
             <Typography variant="h5" sx={{ fontWeight: "bold" }}>
               Pedido: {pedido?.id_pedido}
             </Typography>
-            <form style={{display:'grid'}} onSubmit={handleSubmit} method="get">
+            <form
+              style={{ display: "grid" }}
+              onSubmit={handleSubmit}
+              method="get"
+            >
               <Grid
                 display="grid"
                 gridTemplateColumns="1fr 1fr 1fr 1fr"
@@ -189,12 +202,10 @@ export default function Admin() {
                       <select
                         id={item}
                         value={pedidoUpdate[item]}
-                        onChange={(e) =>
-                          handleChange(e, [item])
-                        }
+                        onChange={(e) => handleChange(e, [item])}
                       >
-                        <option value='true'>true</option>
-                        <option value='false'>false</option>
+                        <option value="true">true</option>
+                        <option value="false">false</option>
                       </select>
                     ) : (
                       <select
@@ -217,33 +228,30 @@ export default function Admin() {
                   </div>
                 ))}
               </Grid>
-              <div
-                style={{
-                  justifySelf:'center',
-                  display: "inline-flex",
-                  alignItems: "center",
-                  padding: "2rem",
-                  justifyContent: "center",
-                  gap:'5rem'
-                }}
+              <Box
+                minWidth="50%"
+                justifyContent="space-around"
+                display="inline-flex"
+                justifySelf="center"
+                padding="2rem"
               >
                 <Button
-                  color="warning"
+                  sx={{ minWidth: "25%", minHeight: "5rem" }}
                   variant="outlined"
-                  style={{ height: "5rem", width: "fit-content" }}
-                  onClick={()=>window.location.reload()}
+                  color="warning"
+                  onClick={() => window.location.reload()}
                 >
                   Cancelar
                 </Button>
                 <Button
-                  color="success"
+                  sx={{ minWidth: "25%", minHeight: "5rem" }}
                   variant="outlined"
+                  color="success"
                   type="submit"
-                  style={{ height: "5rem", width: "fit-content" }}
                 >
-                  Confirmar
+                  Enviar
                 </Button>
-              </div>
+              </Box>
             </form>
           </Grid>
         )}
