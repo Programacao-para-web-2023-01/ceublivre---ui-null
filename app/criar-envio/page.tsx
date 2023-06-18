@@ -164,7 +164,7 @@ export default function CriarEnvio() {
                 padding="2rem"
               >
                 <Button
-                  sx={{ minWidth: "25%", minHeight: "5rem" }}
+                  sx={{ minWidth: "25%", minHeight: "5rem", fontSize:'1.1rem'}}
                   variant="outlined"
                   color="warning"
                   type="reset"
@@ -173,7 +173,7 @@ export default function CriarEnvio() {
                   Limpar
                 </Button>
                 <Button
-                  sx={{ minWidth: "25%", minHeight: "5rem" }}
+                  sx={{ minWidth: "25%", minHeight: "5rem", fontSize:'1.1rem'}}
                   variant="outlined"
                   color="success"
                   type="submit"

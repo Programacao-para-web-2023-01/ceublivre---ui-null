@@ -3,7 +3,7 @@ import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import Navbar from "../components/Navbar/Navbar";
 import "./style.css";
 import { useEffect, useState } from "react";
-import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
+import { KeyboardReturn } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 
 export default function Admin() {
@@ -134,7 +134,7 @@ export default function Admin() {
           <Box display="inline-flex" gap="1rem">
             <Typography variant="h5">Pedido não encontrado</Typography>
             <Button variant="outlined" onClick={() => window.location.reload()}>
-              <KeyboardReturnIcon />
+              <KeyboardReturn />
               Voltar
             </Button>
           </Box>
