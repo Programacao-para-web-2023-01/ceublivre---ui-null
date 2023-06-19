@@ -12,7 +12,7 @@ export default function Home() {
       <main>
         <ul>
           <li>
-            <a href="/consulta-pedido">Consulta do pedido</a>
+            <a href="/rastreamento">Consulta do pedido</a>
           </li>
         </ul>
       </main>

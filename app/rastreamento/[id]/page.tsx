@@ -2,44 +2,35 @@
 
 import { useEffect, useState } from "react";
 import Navbar from "@/app/components/Navbar/Navbar";
-import { Button, Grid, CircularProgress } from "@mui/material";
+import { Button, Grid, CircularProgress, Box, Typography } from "@mui/material";
 import { KeyboardReturn } from "@mui/icons-material";
+import { GetPedidoByCode } from "@/app/components/ApiCrude";
 
 export default function rastreamentoID({ params }: { params: { id: string } }) {
-  const token = `root`;
-  const url = "http://localhost:8000";
   let [pedido, setPedido] = useState<any>({});
   let [loading, setLoading] = useState(true);
   let valor_pedido =
     pedido?.valor_declarado_pedido + pedido?.valor_envio_pedido;
   let prazo_entrega =
+    pedido?.prazo_entrega_pedido -
     Math.trunc(
-      (Number(new Date(pedido?.datahora_criacao)) - Date.now()) /
-        (1000 * 60 * 60 * 24)
-    ) + Number(pedido?.prazo_entrega_pedido);
-
+      Number(Date.now()) - Number(new Date(pedido?.datahora_criacao))
+    ) /
+      (1000 * 60 * 60 * 24);
+  async function getPedido() {
+    let pesquisa = params.id;
+    let resposta = await GetPedidoByCode(pesquisa);
+    setPedido(resposta);
+    setLoading(false);
+  }
   useEffect(() => {
-    fetch(`${url}/pedidos/code/${params.id}`, {
-      method: "GET",
-      headers: new Headers({
-        Authorization: `${token}`,
-        "Content-Type": "application/json",
-      }),
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setPedido(data);
-        setLoading(false);
-      })
-      .catch((error) => setPedido(error));
+    getPedido();
   }, []);
-
   return (
     <>
       <Navbar />
       <main className="flex flex-col items-center justify-between p-24 text-xl">
-        {!loading ? (
+        {pedido?.id_pedido ? (
           <Grid display="grid">
             <table>
               <thead>
@@ -75,11 +66,7 @@ export default function rastreamentoID({ params }: { params: { id: string } }) {
                 </tr>
                 <tr>
                   <td>Prazo de entrega:</td>
-                  <td>
-                    {prazo_entrega <= pedido.prazo_entrega_pedido
-                      ? 0
-                      : prazo_entrega}
-                  </td>
+                  <td>{prazo_entrega > 0 ? Math.ceil(prazo_entrega) : 0} dia(s)</td>
                 </tr>
                 <tr>
                   <td>Status do pedido:</td>
@@ -96,8 +83,16 @@ export default function rastreamentoID({ params }: { params: { id: string } }) {
               Voltar
             </Button>
           </Grid>
-        ) : (
+        ) : loading ? (
           <CircularProgress size={70} />
+        ) : (
+          <Box display="inline-flex" gap="1rem">
+            <Typography variant="h5">Pedido não encontrado</Typography>
+            <Button variant="outlined" onClick={() => window.history.back()}>
+              <KeyboardReturn />
+              Voltar
+            </Button>
+          </Box>
         )}
       </main>
     </>

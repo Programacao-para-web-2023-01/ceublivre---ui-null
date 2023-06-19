@@ -1,14 +1,15 @@
 "use client";
 
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import Navbar from "../components/Navbar/Navbar";
 import "./style.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { CreatePedido } from "../components/ApiCrude";
+import { KeyboardReturn } from "@mui/icons-material";
 
 export default function CriarEnvio() {
-  let url = "http://localhost:8000";
-  let token = "123";
-  let [pedido, setPedido] = useState<any>();
+  let [cadastro, setCadastro] = useState<any>();
+  let [pedido, setPedido] = useState<any>({ expresso_pedido: false });
   let [loading, setLoading] = useState(false);
   let handleChange = (e: any, item: any) => {
     if (e.target.value === "true") {
@@ -23,7 +24,7 @@ export default function CriarEnvio() {
       }));
     }
   };
-  let handleSubmit = (e: { preventDefault: () => void }) => {
+  async function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
     if (
       pedido.valor_declarado_pedido < 24.5 ||
@@ -31,38 +32,31 @@ export default function CriarEnvio() {
     ) {
       alert("Valor aceito do pedido entre R$ 24,50 e R$ 3000,00!");
     } else {
-      fetch(`${url}/pedidos/create`, {
-        method: "POST",
-        headers: new Headers({
-          Authorization: `${token}`,
-          "Content-Type": "application/json",
-        }),
-        body: JSON.stringify(pedido),
-        credentials: "include",
-      })
-        .then((data) => {
-          console.log(data);
-          alert(
-            `O pedido "${pedido?.nome_pedido}" foi cadastrado com sucesso!`
-          );
-          setLoading(true);
-        })
-        .then(() => {
-          setTimeout(() => {
-            setLoading(false), 500;
-          });
-        })
-        .catch((error) => {
-          alert("Ocorreu um erro ao cadastrar o Pedido.");
-        });
+      setLoading(true);
+      let cadastroPrev = await CreatePedido(pedido);
+      setCadastro(cadastroPrev);
+      if (cadastroPrev.rastreamento_pedido) {
+        setLoading(false);
+        setTimeout(
+          () =>
+            alert(
+              `O pedido "${pedido?.nome_pedido}" foi cadastrado com sucesso!`
+            ),
+          100
+        );
+      } else {
+        setLoading(false);
+        setTimeout(() => alert("Ocorreu um erro ao cadastrar o Pedido."), 100);
+      }
     }
-  };
+  }
   return (
     <>
       <Navbar />
       <main>
         <h1>Criar envio</h1>
-        {!loading ? (
+        <Grid display='grid'>
+        {!cadastro ? (
           <form onSubmit={handleSubmit} method="post">
             <div className="nome">
               <label htmlFor="nome">Nome:</label>
@@ -164,7 +158,11 @@ export default function CriarEnvio() {
                 padding="2rem"
               >
                 <Button
-                  sx={{ minWidth: "25%", minHeight: "5rem", fontSize:'1.1rem'}}
+                  sx={{
+                    minWidth: "25%",
+                    minHeight: "5rem",
+                    fontSize: "1.1rem",
+                  }}
                   variant="outlined"
                   color="warning"
                   type="reset"
@@ -173,7 +171,11 @@ export default function CriarEnvio() {
                   Limpar
                 </Button>
                 <Button
-                  sx={{ minWidth: "25%", minHeight: "5rem", fontSize:'1.1rem'}}
+                  sx={{
+                    minWidth: "25%",
+                    minHeight: "5rem",
+                    fontSize: "1.1rem",
+                  }}
                   variant="outlined"
                   color="success"
                   type="submit"
@@ -183,9 +185,20 @@ export default function CriarEnvio() {
               </Box>
             </div>
           </form>
-        ) : (
+        ) : loading ? (
           <CircularProgress />
+        ) : (
+          <Box display="inline-flex" gap="1rem" justifySelf='center'>
+            <Typography variant="h5">
+              Código de rastreamento: <b>{cadastro.rastreamento_pedido}</b>
+            </Typography>
+            <Button variant="outlined" onClick={() => window.location.reload()}>
+              <KeyboardReturn />
+              Voltar
+            </Button>
+          </Box>
         )}
+        </Grid>
       </main>
     </>
   );

@@ -5,6 +5,7 @@ import "./style.css";
 import { useEffect, useState } from "react";
 import { KeyboardReturn } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
+import { GetPedidoById } from "../components/ApiCrude";
 
 export default function Admin() {
   let [pesquisa, setPesquisa] = useState<any>();
@@ -15,22 +16,11 @@ export default function Admin() {
   let [pedidoSelects, setPedidoSelects] = useState<any>();
   let [loading, setLoading] = useState(false);
   let [pedidoUpdate, setPedidoUpdate] = useState<any>();
-  let handleSearch = (e: { preventDefault: () => void }) => {
+  async function handleSearch(e: { preventDefault: () => void }){
     e.preventDefault();
     setLoading(true);
-    fetch(`${url}/pedidos/id/${pesquisa}`, {
-      method: "GET",
-      headers: new Headers({
-        Authorization: `${token}`,
-        "Content-Type": "application/json",
-      }),
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setPedido(data);
-      })
-      .catch((error) => setPedido(error));
+    let resposta = await GetPedidoById(pesquisa);
+    setPedido(resposta)
   };
   let handleChange = (e: any, item: any) => {
     if (e.target.value === "true") {
@@ -93,9 +83,6 @@ export default function Admin() {
     }
     setTimeout(() => setLoading(false), 500);
   }, [pedido]);
-  useEffect(() => {
-    console.log(pedidoUpdate);
-  }, [pedidoUpdate]);
   return (
     <>
       <Navbar />
