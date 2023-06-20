@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { KeyboardReturn } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import { GetPedidoById } from "../components/ApiCrude";
+import { UpdatePedido } from "../components/ApiCrude";
 
 export default function Admin() {
   let [pesquisa, setPesquisa] = useState<any>();
@@ -14,14 +15,15 @@ export default function Admin() {
   let [pedido, setPedido] = useState<any>();
   let [pedidoInputs, setPedidoInputs] = useState<any>();
   let [pedidoSelects, setPedidoSelects] = useState<any>();
+  let [pedidoDisabled, setPedidoDisabled] = useState<any>();
   let [loading, setLoading] = useState(false);
   let [pedidoUpdate, setPedidoUpdate] = useState<any>();
-  async function handleSearch(e: { preventDefault: () => void }){
+  async function handleSearch(e: { preventDefault: () => void }) {
     e.preventDefault();
     setLoading(true);
     let resposta = await GetPedidoById(pesquisa);
-    setPedido(resposta)
-  };
+    setPedido(resposta);
+  }
   let handleChange = (e: any, item: any) => {
     if (e.target.value === "true") {
       setPedidoUpdate((data: any) => ({
@@ -35,35 +37,24 @@ export default function Admin() {
       }));
     }
   };
-  let handleSubmit = (e: { preventDefault: () => void }) => {
+  async function handleSubmit(e: { preventDefault: () => void }) {
+    console.log(pedidoUpdate);
     e.preventDefault();
-    if (
-      (pedidoUpdate.valor_declarado_pedido < 24.5 
-        || 
-        pedidoUpdate.valor_declarado_pedido > 3000)
-    ) {
-      alert("Valor aceito do pedido entre R$ 24,50 e R$ 3000,00!");
-    } else {
-      fetch(`${url}/pedidos/${pedidoUpdate?.id_pedido}`, {
-        method: "PUT",
-        headers: new Headers({
-          Authorization: `${token}`,
-          "Content-Type": "application/json",
-        }),
-        body: JSON.stringify(pedidoUpdate),
-        credentials: "include",
-      })
-        .then((data) => {
-          alert(
-            `O pedido "${pedidoUpdate?.id_pedido}" foi atualizado com sucesso!`
-          );
-          handleSearch(e);
-        })
-        .catch((error) => {
-          alert("Ocorreu um erro ao atualizar o Pedido.");
-        });
+    setLoading(true);
+      let resposta = await UpdatePedido(pedidoUpdate, pedidoUpdate.id_pedido);
+      if (!resposta.detail) {
+        alert(
+          `O pedido "${pedidoUpdate?.id_pedido}" foi atualizado com sucesso!`
+        );
+      } else {
+        alert(`Ocorreu um erro ao atualizar o Pedido: ${resposta.detail}`);
+        setLoading(false);
     }
-  };
+    handleSearch(e);
+  }
+  useEffect(()=>{
+    console.log(pedidoUpdate)
+  },[pedidoUpdate])
   useEffect(() => {
     if (pedido?.id_pedido) {
       setPedidoUpdate(pedido);
@@ -73,11 +64,24 @@ export default function Admin() {
           .filter((item) => !item.includes("id_pedido"))
           .filter((item) => !item.includes("rastreamento"))
           .filter((item) => !item.includes("status"))
+          .filter((item) => !item.includes("prazo"))
+          .filter((item) => !item.includes("envio"))
           .filter((item) => typeof pedido[item] !== "boolean")
       );
       setPedidoSelects(
+        Object.keys(pedido)
+          .filter(
+            (item) => item.includes("status")
+          )
+          .filter((item) => !item.includes("tem_entrega"))
+      );
+      setPedidoDisabled(
         Object.keys(pedido).filter(
-          (item) => typeof pedido[item] === "boolean" || item.includes("status")
+          (item) =>
+            item.includes("envio") ||
+            item.includes("prazo_entrega") ||
+            item.includes("rastreamento") ||
+            typeof pedido[item] === 'boolean'
         )
       );
     }
@@ -146,12 +150,9 @@ export default function Admin() {
                       {item
                         .replaceAll("_", " ")
                         .replaceAll(" pedido", "")
-                        .replace("prazo entrega", "prazo para entrega (dias)")
                         .replace("peso", "peso (kg)")
                         .replace("valor declarado", "valor declarado (R$)")
-                        .replace("valor envio", "valor envio (R$)")
-                        .replace("expresso", "entrega expressa")
-                        .replace("tem ", "")}
+                        .replace("expresso", "entrega expressa")}
                     </label>
                     {typeof pedido[item] !== "number" ? (
                       <input
@@ -212,6 +213,22 @@ export default function Admin() {
                         </option>
                       </select>
                     )}
+                  </div>
+                ))}
+                {pedidoDisabled?.map((item: any) => (
+                  <div style={{ display: "grid" }}>
+                    <label htmlFor={item}>
+                      {item
+                        .replaceAll("_", " ")
+                        .replaceAll(" pedido", "")
+                        .replace("valor envio", "valor envio (R$)")
+                        .replace("rastreamento", "código de rastreamento")}
+                    </label>
+                    <input
+                      disabled
+                      id={item}
+                      value={pedidoUpdate[item].toLocaleString()}
+                    />
                   </div>
                 ))}
               </Grid>
