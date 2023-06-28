@@ -29,29 +29,33 @@ export default function Transportadora() {
     <Grid display="grid">
       <Navbar />
       <Box display="grid" justifyContent="center">
+        <Typography fontWeight={'bold'} fontSize={'2rem'}>
+        Lista de transportadoras
+
+        </Typography>
         {!loading ? (
-          <Table>
-            <thead>
-              <tr>
-                <th
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "1.5rem",
-                  }}
-                  scope="col"
-                >
-                  Lista de transportadoras
-                </th>
-              </tr>
-            </thead>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                    Transportadora
+                </TableCell>
+                <TableCell>
+                    ID
+                </TableCell>
+                <TableCell>
+                    Telefone
+                </TableCell>
+              </TableRow>
+            </TableHead>
             {transportadoras?.map((item: any) => (
               <TableBody>
                 <TableRow>
                   <TableCell>
-                    Transportadora: {item.nome_transportadora}
+                    {item.nome_transportadora}
                   </TableCell>
-                  <TableCell>id: {item.key}</TableCell>
-                  <TableCell>Telefone: {item.tele_transportadora}</TableCell>
+                  <TableCell>{item.key}</TableCell>
+                  <TableCell>{item.tele_transportadora}</TableCell>
                 </TableRow>
               </TableBody>
             ))}
