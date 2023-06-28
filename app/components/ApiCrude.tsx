@@ -1,3 +1,4 @@
+import { GetServerSideProps, GetStaticProps } from "next";
 import React, { useState } from "react";
 
 let url = "http://localhost:8000";
@@ -66,4 +67,42 @@ export async function UpdatePedido(pedidoUpdate: Object, id_pedido: string){
     credentials: "include",
   })
   return resposta.json()
+}
+
+export async function GetTransportadoraById(pesquisa: string) {
+  let transportadora = fetch(`${url}/transportadora/${pesquisa}`, {
+    method: "GET",
+    headers: new Headers({
+      Authorization: `${token}`,
+      "Content-Type": "application/json",
+    }),
+    credentials: "include",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      return error;
+    });
+  return transportadora;
+}
+
+export async function GetAllTransportadoras (){
+  let transportadora = await fetch(`${url}/transportadora`, {
+    method: "GET",
+    headers: new Headers({
+      Authorization: `${token}`,
+      "Content-Type": "application/json",
+    }),
+    credentials: "include",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      return error;
+    });
+  return transportadora;
 }
