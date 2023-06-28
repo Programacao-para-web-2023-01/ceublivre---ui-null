@@ -13,9 +13,6 @@ export default function Navbar() {
           <a href="/rastreamento">Rastreamento</a>
         </li>
         <li>
-          <a href="/contact">Transportadoras</a>
-        </li>
-        <li>
           <a href="/criar-envio">Envio</a>
         </li>
         <li>
