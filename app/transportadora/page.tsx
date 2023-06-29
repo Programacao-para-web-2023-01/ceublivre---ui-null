@@ -75,55 +75,65 @@ export default function Transportadora() {
     LoadData();
   }, []);
   return (
-    <Grid display="grid">
+    <>
       <Navbar />
-      <Box display="grid" justifyContent="center">
-        <Typography fontWeight={"bold"} fontSize={"2rem"}>
-          Lista de transportadoras
-        </Typography>
-        <div style={{width:'100%', display:'inline-flex', justifyContent:'space-between'}}>
-          <Button
-            sx={{width: "max-content", fontSize: ".8rem" }}
-            onClick={handleDeleteSelected}
-          >
-            <Remove />
-            Deletar selecionadas
-          </Button>
-          <Button
-            sx={{width: "max-content", fontSize: ".8rem" }}
-            onClick={() => {
-              setOpenPopUp(true);
-            }}
-          >
-            <Add />
-            Adicionar transportadora
-          </Button>
-        </div>
-        {!loading ? (
-          <TranspList
-            UpdateDeleteList={UpdateDeleteList}
-            setOpenPopUp={setOpenPopUp}
-            transportadoras={transportadoras}
-            handleDelete={handleDelete}
-          />
-        ) : (
-          <Box display={"grid"} justifyContent="center" margin={"4rem"}>
-            <CircularProgress size={90} />
+      <main>
+        <Grid display="grid">
+          <Box display="grid" justifyContent="center">
+            <Typography fontWeight={"bold"} fontSize={"2rem"}>
+              Lista de transportadoras
+            </Typography>
+            <div
+              style={{
+                width: "100%",
+                display: "inline-flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Button
+                sx={{ width: "max-content", fontSize: ".8rem" }}
+                onClick={handleDeleteSelected}
+              >
+                <Remove />
+                Deletar selecionadas
+              </Button>
+              <Button
+                sx={{ width: "max-content", fontSize: ".8rem" }}
+                onClick={() => {
+                  setOpenPopUp(true);
+                }}
+              >
+                <Add />
+                Adicionar transportadora
+              </Button>
+            </div>
+            {!loading ? (
+              <TranspList
+                UpdateDeleteList={UpdateDeleteList}
+                setOpenPopUp={setOpenPopUp}
+                transportadoras={transportadoras}
+                handleDelete={handleDelete}
+              />
+            ) : (
+              <Box display={"grid"} justifyContent="center" margin={"4rem"}>
+                <CircularProgress size={90} />
+              </Box>
+            )}
           </Box>
-        )}
-      </Box>
-      <Popup
-        open={openPopUp}
-        onClose={() => setOpenPopUp(false)}
-        position="right center"
-      >
-        <AddTranspForm
-          createData={createData}
-          setCreateData={setCreateData}
-          handleSubmit={handleSubmit}
-          setOpenPopUp={setOpenPopUp}
-        />
-      </Popup>
-    </Grid>
+          <Popup
+            open={openPopUp}
+            onClose={() => setOpenPopUp(false)}
+            position="right center"
+          >
+            <AddTranspForm
+              createData={createData}
+              setCreateData={setCreateData}
+              handleSubmit={handleSubmit}
+              setOpenPopUp={setOpenPopUp}
+            />
+          </Popup>
+        </Grid>
+      </main>
+    </>
   );
 }
