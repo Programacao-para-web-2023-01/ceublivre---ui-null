@@ -15,20 +15,28 @@ form {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 0.333fr 0.666fr;
   gap: 2rem;
-  grid-template-areas: 
-    "cepOrigem cepDestino"
+  grid-template-areas:
     "nome nome"
+    "cepOrigem cepDestino"
     "outros outros";
 }
 
-.nome { grid-area: nome; }
-.cepOrigem { grid-area: cepOrigem; }
-.cepDestino { grid-area: cepDestino; }
-.outros { grid-area: outros; 
+.nome {
+  grid-area: nome;
+}
+.cepOrigem {
+  grid-area: cepOrigem;
+}
+.cepDestino {
+  grid-area: cepDestino;
+}
+.outros {
+  grid-area: outros;
   display: grid;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   height: 2.2rem;
   font-size: 1.5rem;

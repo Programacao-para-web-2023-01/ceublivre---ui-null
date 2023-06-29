@@ -15,6 +15,7 @@ export default function SearchPedido(props: any){
               <label htmlFor="IdPedido">id do pedido:</label>
               <div>
                 <input
+                required
                   onChange={(e) => props.setPesquisa(e.target.value)}
                   id="IdPedido"
                   type="text"

@@ -15,6 +15,7 @@ export default function Rastreamento() {
             Digite o código de rastreamento:
           </label>
           <input
+          required
             value={rast}
             onChange={(e) => setRast(e.target.value)}
             className="text-black"

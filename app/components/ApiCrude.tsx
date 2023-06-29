@@ -42,9 +42,8 @@ export async function GetPedidoByCode(pesquisa: string) {
   return pedido;
 }
 
-export async function CreatePedido(pedido: Object){
-  let resposta = await
-  fetch(`${url}/pedidos/create`, {
+export async function CreatePedido(pedido: Object) {
+  let resposta = await fetch(`${url}/pedidos/create`, {
     method: "POST",
     headers: new Headers({
       Authorization: `${token}`,
@@ -52,11 +51,11 @@ export async function CreatePedido(pedido: Object){
     }),
     body: JSON.stringify(pedido),
     credentials: "include",
-  })
-  return resposta.json()
+  });
+  return resposta.json();
 }
 
-export async function UpdatePedido(pedidoUpdate: Object, id_pedido: string){
+export async function UpdatePedido(pedidoUpdate: Object, id_pedido: string) {
   let resposta = await fetch(`${url}/pedidos/${id_pedido}`, {
     method: "PUT",
     headers: new Headers({
@@ -65,8 +64,27 @@ export async function UpdatePedido(pedidoUpdate: Object, id_pedido: string){
     }),
     body: JSON.stringify(pedidoUpdate),
     credentials: "include",
+  });
+  return resposta.json();
+}
+
+export async function GetAllTransportadoras() {
+  let transportadora = await fetch(`${url}/transportadora`, {
+    method: "GET",
+    headers: new Headers({
+      Authorization: `${token}`,
+      "Content-Type": "application/json",
+    }),
+    credentials: "include",
   })
-  return resposta.json()
+    .then((res) => res.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      return error;
+    });
+  return transportadora;
 }
 
 export async function GetTransportadoraById(pesquisa: string) {
@@ -88,9 +106,22 @@ export async function GetTransportadoraById(pesquisa: string) {
   return transportadora;
 }
 
-export async function GetAllTransportadoras (){
-  let transportadora = await fetch(`${url}/transportadora`, {
-    method: "GET",
+export async function CreateTransportadora(transportadora: Object) {
+  let resposta = await fetch(`${url}/transportadora/create`, {
+    method: "POST",
+    headers: new Headers({
+      Authorization: `${token}`,
+      "Content-Type": "application/json",
+    }),
+    body: JSON.stringify(transportadora),
+    credentials: "include",
+  });
+  return resposta.json();
+}
+
+export async function DeleteTransportadoraById(id: string) {
+  let transportadora = fetch(`${url}/transportadora/${id}`, {
+    method: "DELETE",
     headers: new Headers({
       Authorization: `${token}`,
       "Content-Type": "application/json",

@@ -25,7 +25,7 @@ export default function CriarEnvio() {
       }));
     }
   };
-  async function handleSubmit(e: { preventDefault: () => void }) {
+  async function handleSubmit(e: any) {
     setLoading(true);
     e.preventDefault();
     let cadastroPrev = await CreatePedido(pedido);
@@ -40,7 +40,7 @@ export default function CriarEnvio() {
         100
       );
     } else {
-      alert(`Ocorreu um erro ao cadastrar o Pedido: ${cadastroPrev.detail}`);
+      alert(`Ocorreu um erro ao cadastrar o Pedido: ${cadastroPrev.detail[0]?.msg ||cadastroPrev.detail}`);
     }
     setLoading(false);
   }

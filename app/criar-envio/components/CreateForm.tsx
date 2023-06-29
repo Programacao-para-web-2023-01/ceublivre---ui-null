@@ -9,6 +9,7 @@ export default function CreateForm(props: any){
               <div className="nome">
                 <label htmlFor="nome">Nome:</label>
                 <input
+                required
                   onChange={(e) => {
                     props.setPedido((data: any) => ({
                       ...data,
@@ -25,6 +26,7 @@ export default function CreateForm(props: any){
               <div className="cepOrigem">
                 <label htmlFor="cepOrigem">CEP de origem:</label>
                 <input
+                required
                   onChange={(e) => {
                     props.setPedido((data: any) => ({
                       ...data,
@@ -41,6 +43,7 @@ export default function CreateForm(props: any){
               <div className="cepDestino">
                 <label htmlFor="cepDestino">CEP de destino:</label>
                 <input
+                required
                   onChange={(e) => {
                     props.setPedido((data: any) => ({
                       ...data,
@@ -58,6 +61,7 @@ export default function CreateForm(props: any){
               <div className="outros">
                 <label htmlFor="valor">Valor do objeto enviado (R$):</label>
                 <input
+                required
                   onChange={(e) => {
                     props.setPedido((data: any) => ({
                       ...data,
@@ -68,11 +72,14 @@ export default function CreateForm(props: any){
                   id="valor"
                   name="valor"
                   type="number"
+                  min="24.5"
+                  step="0.01"
                   className="text-black"
                 />
 
                 <label htmlFor="peso">Peso do objeto enviado (kg):</label>
                 <input
+                required
                   onChange={(e) => {
                     props.setPedido((data: any) => ({
                       ...data,

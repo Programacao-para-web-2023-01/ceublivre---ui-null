@@ -29,6 +29,7 @@ export default function UpdateForm(props: any){
                     </label>
                     {typeof props.pedido[item] !== "number" ? (
                       <input
+                      required
                         id={item}
                         type="text"
                         value={props.pedidoUpdate[item]}
@@ -41,8 +42,11 @@ export default function UpdateForm(props: any){
                       />
                     ) : (
                       <input
+                      required
                         id={item}
                         type="number"
+                        min="0"
+                        step="0.01"
                         value={props.pedidoUpdate[item]}
                         onChange={(e) =>
                           props.setPedidoUpdate((data: any) => ({

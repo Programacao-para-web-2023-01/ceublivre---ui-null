@@ -17,7 +17,7 @@ export default function Admin() {
   let [pedidoDisabled, setPedidoDisabled] = useState<any>();
   let [loading, setLoading] = useState(false);
   let [pedidoUpdate, setPedidoUpdate] = useState<any>();
-  async function handleSearch(e: { preventDefault: () => void }) {
+  async function handleSearch(e: any) {
     e.preventDefault();
     setLoading(true);
     let resposta = await GetPedidoById(pesquisa);
@@ -36,7 +36,7 @@ export default function Admin() {
       }));
     }
   };
-  async function handleSubmit(e: { preventDefault: () => void }) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
     setLoading(true);
       let resposta = await UpdatePedido(pedidoUpdate, pedidoUpdate.id_pedido);
@@ -45,7 +45,7 @@ export default function Admin() {
           `O pedido "${pedidoUpdate?.id_pedido}" foi atualizado com sucesso!`
         );
       } else {
-        alert(`Ocorreu um erro ao atualizar o Pedido: ${resposta.detail}`);
+        alert(`Ocorreu um erro ao atualizar o Pedido: ${resposta.detail[0]?.msg || resposta.detail}`);
         setLoading(false);
     }
     handleSearch(e);
