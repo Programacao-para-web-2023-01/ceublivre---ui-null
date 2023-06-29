@@ -56,6 +56,19 @@ export async function CreatePedido(pedido: Object){
   return resposta.json()
 }
 
+export async function CancelarPedido(id: string){
+  let resposta = await
+  fetch(`${url}/pedidos/${id}`, {
+    method: "DELETE",
+    headers: new Headers({
+      Authorization: `${token}`,
+      "Content-Type": "application/json",
+    }),
+    credentials: "include",
+  })
+  return resposta.json()
+}
+
 export async function UpdatePedido(pedidoUpdate: Object, id_pedido: string){
   let resposta = await fetch(`${url}/pedidos/${id_pedido}`, {
     method: "PUT",

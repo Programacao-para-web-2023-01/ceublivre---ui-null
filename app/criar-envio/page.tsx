@@ -4,7 +4,7 @@ import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import Navbar from "../components/Navbar/Navbar";
 import "./style.css";
 import { useEffect, useState } from "react";
-import { CreatePedido } from "../components/ApiCrude";
+import { CreatePedido, CancelarPedido } from "../components/ApiCrude";
 import { KeyboardReturn } from "@mui/icons-material";
 import CreateForm from "./components/CreateForm";
 
@@ -29,19 +29,29 @@ export default function CriarEnvio() {
     setLoading(true);
     e.preventDefault();
     let cadastroPrev = await CreatePedido(pedido);
-    setCadastro(cadastroPrev);
-    if (!cadastroPrev.detail) {
-      setLoading(false);
-      setTimeout(
-        () =>
-          alert(
-            `O pedido "${pedido?.nome_pedido}" foi cadastrado com sucesso!`
-          ),
-        100
-      );
-    } else {
+
+    if (cadastroPrev.detail) {
       alert(`Ocorreu um erro ao cadastrar o Pedido: ${cadastroPrev.detail}`);
+      setLoading(false);
+      return;
     }
+
+    if (!confirm(`Deseja enviar o pedido "${pedido?.nome_pedido}", pelo valor de frete R$${cadastroPrev?.valor_envio_pedido}?`)) {
+      CancelarPedido(cadastroPrev?.id_pedido)
+      setLoading(false);
+      return;
+    }
+
+    setCadastro(cadastroPrev);
+
+    setLoading(false);
+    setTimeout(
+      () =>
+        alert(
+          `O pedido "${pedido?.nome_pedido}" foi cadastrado com sucesso!`
+        ),
+      100
+    );
     setLoading(false);
   }
   return (
